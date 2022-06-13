@@ -5,6 +5,7 @@ from bs4 import BeautifulSoup
 import requests
 
 from libs.string import anime_info_changer, anime_slug_changer
+from otakudesu_scrape.variables import BASE_URL
 
 
 # Create your views here.
@@ -13,12 +14,12 @@ def get_all(request):
     page = request.query_params.get('page')
     filter_by = request.query_params.get('filter_by')
     
-    url = 'https://otakudesu.watch/'
+    url = BASE_URL
     
     if filter_by == 'on-going':
-        url = f'https://otakudesu.watch/ongoing-anime/page/{page}'
+        url = f'{BASE_URL}ongoing-anime/page/{page}'
     if filter_by == 'complete':
-        url = f'https://otakudesu.watch/complete-anime/page/{page}'
+        url = f'{BASE_URL}complete-anime/page/{page}'
 
     response = requests.get(url)
 
@@ -31,7 +32,7 @@ def get_all(request):
 
 @api_view(['GET'])
 def get_by_slug(request, slug):
-    url = f'https://otakudesu.watch/anime/{slug}/'
+    url = f'{BASE_URL}anime/{slug}/'
 
     response = requests.get(url)
 
@@ -60,7 +61,7 @@ def get_by_slug(request, slug):
 
 @api_view(['GET'])
 def get_stream_by_slug(request, slug):
-    url = f'https://otakudesu.watch/episode/{slug}/'
+    url = f'{BASE_URL}episode/{slug}/'
 
     response = requests.get(url)
 
