@@ -87,3 +87,18 @@ def get_search(request):
     data = [{'anime_title': pr.find('a').text,'img_url':pr.find('img')['src'], 'slug': anime_slug_changer(pr.find("a")["href"]).rstrip('/')} for pr in parent]
 
     return custom_response(data)
+
+@api_view(['GET'])
+def get_stream_url(request):
+    stream_url = request.query_params.get('url')
+    url = stream_url
+
+    response = requests.get(url)
+
+    soup = BeautifulSoup(response.text, 'html.parser')
+    parent = soup.select('#pembed')
+    data = {}
+    for pr in parent:
+        data = {'stream_url': pr.find('iframe')['src']} 
+
+    return custom_response(data)
