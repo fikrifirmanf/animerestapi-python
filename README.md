@@ -40,7 +40,7 @@ python3 manage.py runserver
 
 GET <http://localhost:8000/api/v1/anime/search?q=bor> --> Search anime
 
-GET <http://localhost:8000/api/v1/anime/dance-danseur-sub-indo/stream> --> Getting anime streaming link
+GET <http://localhost:8000/api/v1/anime/ddd-episode-6-sub-indo/stream> --> Getting anime streaming link
 
 GET <http://localhost:8000/api/v1/anime/dance-danseur-sub-indo/detail> --> Getting anime detail
 
