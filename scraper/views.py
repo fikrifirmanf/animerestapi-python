@@ -70,12 +70,8 @@ def get_stream_by_slug(request, slug):
     parent = soup.select('#venkonten > div.venser > div.venutama')
     data = None
     for pr in parent:
-        data = {
-        'anime_title': pr.find(class_='posttl').text,
-        'stream_url': pr.find('iframe')['src'],
-        'next_episode': None if not pr.find('a', {'title':'Episode Selanjutnya'}) else anime_slug_changer(pr.find('a', {'title':'Episode Selanjutnya'})['href']),
-        'prev_episode': None if not pr.find('a', {'title':'Episode Sebelumnya'}) else anime_slug_changer(pr.find('a', {'title':'Episode Sebelumnya'})['href'])
-    }
+        data = {'anime_title': pr.find(class_='posttl').text, 'stream_url': pr.find('iframe')['src'], 'next_episode': anime_slug_changer(pr.find('a', {'title': 'Episode Selanjutnya'})['href']) if pr.find('a', {'title': 'Episode Selanjutnya'}) else None, 'prev_episode': anime_slug_changer(pr.find('a', {'title': 'Episode Sebelumnya'})['href']) if pr.find('a', {'title': 'Episode Sebelumnya'}) else None}
+
 
     return custom_response(data)
 
