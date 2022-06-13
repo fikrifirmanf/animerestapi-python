@@ -38,6 +38,7 @@ def get_by_slug(request, slug):
 
     soup = BeautifulSoup(response.text, 'html.parser')
     parent = soup.select('#venkonten > div.venser')
+    data = None
     for pr in parent:
         data = {
         'anime_title': anime_info_changer((pr.select("div.infozin > div > p:nth-child(1)"))[0].find('span').text),
@@ -67,7 +68,7 @@ def get_stream_by_slug(request, slug):
 
     soup = BeautifulSoup(response.text, 'html.parser')
     parent = soup.select('#venkonten > div.venser > div.venutama')
-    
+    data = None
     for pr in parent:
         data = {
         'anime_title': pr.find(class_='posttl').text,
@@ -75,5 +76,18 @@ def get_stream_by_slug(request, slug):
         'next_episode': None if not pr.find('a', {'title':'Episode Selanjutnya'}) else anime_slug_changer(pr.find('a', {'title':'Episode Selanjutnya'})['href']),
         'prev_episode': None if not pr.find('a', {'title':'Episode Sebelumnya'}) else anime_slug_changer(pr.find('a', {'title':'Episode Sebelumnya'})['href'])
     }
+
+    return custom_response(data)
+
+@api_view(['GET'])
+def get_search(request):
+    q = request.query_params.get('q')
+    url = f'{BASE_URL}?s={q}&post_type=anime'
+
+    response = requests.get(url)
+
+    soup = BeautifulSoup(response.text, 'html.parser')
+    parent = soup.select('#venkonten > div > div.venser > div > div > ul > li')
+    data = [{'anime_title': pr.find('a').text,'img_url':pr.find('img')['src'], 'slug': anime_slug_changer(pr.find("a")["href"]).rstrip('/')} for pr in parent]
 
     return custom_response(data)
